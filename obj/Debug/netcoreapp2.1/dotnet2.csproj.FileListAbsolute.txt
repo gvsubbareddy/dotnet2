@@ -1,0 +1,14 @@
+/home/subbu/dotnet2/bin/Debug/netcoreapp2.1/dotnet2.deps.json
+/home/subbu/dotnet2/bin/Debug/netcoreapp2.1/dotnet2.runtimeconfig.json
+/home/subbu/dotnet2/bin/Debug/netcoreapp2.1/dotnet2.runtimeconfig.dev.json
+/home/subbu/dotnet2/bin/Debug/netcoreapp2.1/dotnet2.dll
+/home/subbu/dotnet2/bin/Debug/netcoreapp2.1/dotnet2.pdb
+/home/subbu/dotnet2/obj/Debug/netcoreapp2.1/dotnet2.csprojAssemblyReference.cache
+/home/subbu/dotnet2/obj/Debug/netcoreapp2.1/dotnet2.csproj.CoreCompileInputs.cache
+/home/subbu/dotnet2/obj/Debug/netcoreapp2.1/dotnet2.RazorAssemblyInfo.cache
+/home/subbu/dotnet2/obj/Debug/netcoreapp2.1/dotnet2.RazorAssemblyInfo.cs
+/home/subbu/dotnet2/obj/Debug/netcoreapp2.1/dotnet2.AssemblyInfoInputs.cache
+/home/subbu/dotnet2/obj/Debug/netcoreapp2.1/dotnet2.AssemblyInfo.cs
+/home/subbu/dotnet2/obj/Debug/netcoreapp2.1/dotnet2.RazorTargetAssemblyInfo.cache
+/home/subbu/dotnet2/obj/Debug/netcoreapp2.1/dotnet2.dll
+/home/subbu/dotnet2/obj/Debug/netcoreapp2.1/dotnet2.pdb
