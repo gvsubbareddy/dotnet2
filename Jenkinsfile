@@ -11,7 +11,8 @@ pipeline {
             echo "BRANCH_NAME: ${params.BRANCH_NAME}"
             if("${params.BRANCH_NAME}" == "INT") {
                 echo 'checkout the code'
-                git(url: 'https://github.com/gvsubbareddy/dotnet2.git', changelog: true)
+                /*git(url: 'https://github.com/gvsubbareddy/dotnet2.git', changelog: true)*/
+		git(branch: ${params.BRANCH_NAME}, url: 'https://github.com/gvsubbareddy/dotnet2.git', changelog: true)
             } else {
                 echo 'deployment to ${params.BRANCH_NAME} is not supported'
             }
