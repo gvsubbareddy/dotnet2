@@ -30,7 +30,6 @@ pipeline {
     stage('deploy') {
       steps {
         script {
-            echo 'checkout the code from $TARGET_ENVIRONMENT'
             echo "TARGET_ENVIRONMENT: ${params.TARGET_ENVIRONMENT}"
             if("${params.TARGET_ENVIRONMENT}" == "INT") {
                 echo 'Deploying to INT'
