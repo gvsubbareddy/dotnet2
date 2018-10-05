@@ -1,32 +1,18 @@
 pipeline {
   agent any
   parameters {
-    choice choices: ['INT', 'mkt','PV'], description: 'Deploy to Environment', name: 'BRANCH_NAME'
+    choice choices: ['INT', 'mkt','PV'], description: 'Deploy to Environment', name: 'TARGET_ENVIRONMENT'
     }
   stages {
-    stage('checkout') {
-      steps {
-        script {
-            echo 'checkout the code from $BRANCH_NAME'
-            echo "BRANCH_NAME: ${params.BRANCH_NAME}"
-            if("${params.BRANCH_NAME}" == "INT") {
-                echo 'checkout the code'
-                /*git(url: 'https://github.com/gvsubbareddy/dotnet2.git', changelog: true)*/
-            } else {
-                echo 'deployment to ${params.BRANCH_NAME} is not supported'
-            }
-        }
-      }
-    }
-    stage('compile') {
+    stage('build') {
       steps {
         echo "...Building. Build number: ${BUILD_NUMBER}"
         sh 'scl enable rh-dotnet21 bash'
-        sh 'cd /var/lib/jenkins/workspace/pipelinetest03Oct'
+        sh 'cd ${env.WORKSPACE}'
         sh '/opt/rh/rh-dotnet21/root/usr/bin/dotnet build'
         sh '/opt/rh/rh-dotnet21/root/usr/bin/dotnet publish'
-        sh 'cd /var/lib/jenkins/workspace/pipelinetest03Oct/bin/Debug/netcoreapp2.1/publish'
-        sh 'zip -r dotnet2-${BUILD_NUMBER}.zip /var/lib/jenkins/workspace/pipelinetest03Oct/bin/Debug/netcoreapp2.1/publish/'
+        sh 'cd ${env.WORKSPACE}/bin/Debug/netcoreapp2.1/publish'
+        sh 'zip -r evodashboard-${BUILD_NUMBER}.zip ${env.WORKSPACE}/bin/Debug/netcoreapp2.1/publish/'
         echo "done zip"
       }
     }
@@ -43,9 +29,30 @@ pipeline {
     }*/
     stage('deploy') {
       steps {
-        echo 'deploying webapp to azure..'
-        sh 'az webapp deployment source config-zip -g myresourcegroup  -n subbuwebapp1  --src dotnet2-${BUILD_NUMBER}.zip'
+        script {
+            echo 'checkout the code from $TARGET_ENVIRONMENT'
+            echo "TARGET_ENVIRONMENT: ${params.TARGET_ENVIRONMENT}"
+            if("${params.TARGET_ENVIRONMENT}" == "INT") {
+                echo 'Deploying to INT'
+                sh 'az webapp deployment source config-zip -g myresourcegroup  -n subbuwebapp1  --src dotnet2-${BUILD_NUMBER}.zip'
+            } else {
+                if("${params.TARGET_ENVIRONMENT}" == "mkt") {
+                    echo 'Deploying to INT'
+                    sh 'az webapp deployment source config-zip -g myresourcegroup  -n subbuwebapp1  --src dotnet2-${BUILD_NUMBER}.zip'
+                } else {
+                    if("${params.TARGET_ENVIRONMENT}" == "pv") {
+                        echo 'Deploying to INT'
+                        sh 'az webapp deployment source config-zip -g myresourcegroup  -n subbuwebapp1  --src dotnet2-${BUILD_NUMBER}.zip'
+                    } else {
+                        error 'deployment to ${params.TARGET_ENVIRONMENT} is not supported'
+                    }
+                    
+                }
+                
+            }
+        }
       }
+      
     }
     stage('notify') {
       steps {
