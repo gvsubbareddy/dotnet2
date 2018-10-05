@@ -34,15 +34,15 @@ pipeline {
             echo "TARGET_ENVIRONMENT: ${params.TARGET_ENVIRONMENT}"
             if("${params.TARGET_ENVIRONMENT}" == "INT") {
                 echo 'Deploying to INT'
-                sh 'az webapp deployment source config-zip -g myresourcegroup  -n subbuwebapp1  --src dotnet2-${BUILD_NUMBER}.zip'
+                sh 'az webapp deployment source config-zip -g myresourcegroup  -n subbuwebapp1  --src evodashboard-${BUILD_NUMBER}.zip'
             } else {
                 if("${params.TARGET_ENVIRONMENT}" == "mkt") {
                     echo 'Deploying to INT'
-                    sh 'az webapp deployment source config-zip -g myresourcegroup  -n subbuwebapp1  --src dotnet2-${BUILD_NUMBER}.zip'
+                    sh 'az webapp deployment source config-zip -g myresourcegroup  -n subbuwebapp1  --src evodashboard-${BUILD_NUMBER}.zip'
                 } else {
                     if("${params.TARGET_ENVIRONMENT}" == "pv") {
                         echo 'Deploying to INT'
-                        sh 'az webapp deployment source config-zip -g myresourcegroup  -n subbuwebapp1  --src dotnet2-${BUILD_NUMBER}.zip'
+                        sh 'az webapp deployment source config-zip -g myresourcegroup  -n subbuwebapp1  --src evodashboard-${BUILD_NUMBER}.zip'
                     } else {
                         error 'deployment to ${params.TARGET_ENVIRONMENT} is not supported'
                     }
