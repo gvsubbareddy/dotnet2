@@ -1,7 +1,7 @@
 pipeline {
   agent any
   parameters {
-    choice choices: ['INT', 'mkt'], description: 'Deploy to Environment', name: 'BRANCH_NAME'
+    choice choices: ['INT', 'mkt','PV'], description: 'Deploy to Environment', name: 'BRANCH_NAME'
     }
   stages {
     stage('checkout') {
