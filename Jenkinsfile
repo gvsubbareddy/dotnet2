@@ -8,10 +8,10 @@ pipeline {
       steps {
         echo "...Building. Build number: ${BUILD_NUMBER}"
         sh 'scl enable rh-dotnet21 bash'
-        sh 'cd ${env.WORKSPACE}'
+        sh 'cd $WORKSPACE'
         sh '/opt/rh/rh-dotnet21/root/usr/bin/dotnet build'
         sh '/opt/rh/rh-dotnet21/root/usr/bin/dotnet publish'
-        sh 'cd ${env.WORKSPACE}/bin/Debug/netcoreapp2.1/publish'
+        sh 'cd $WORKSPACE/bin/Debug/netcoreapp2.1/publish'
         sh 'zip -r evodashboard-${BUILD_NUMBER}.zip ${env.WORKSPACE}/bin/Debug/netcoreapp2.1/publish/'
         echo "done zip"
       }
