@@ -12,7 +12,7 @@ pipeline {
         sh '/opt/rh/rh-dotnet21/root/usr/bin/dotnet build'
         sh '/opt/rh/rh-dotnet21/root/usr/bin/dotnet publish'
         sh 'cd $WORKSPACE/bin/Debug/netcoreapp2.1/publish'
-        sh 'zip -r evodashboard-${BUILD_NUMBER}.zip ${env.WORKSPACE}/bin/Debug/netcoreapp2.1/publish/'
+        sh 'zip -r evodashboard-${BUILD_NUMBER}.zip $WORKSPACE/bin/Debug/netcoreapp2.1/publish/'
         echo "done zip"
       }
     }
