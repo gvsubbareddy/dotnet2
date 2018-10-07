@@ -11,7 +11,7 @@ pipeline {
                 if("${params.TARGET_ENVIRONMENT}" == "INT") {
                     echo 'checkout the code from the develop'
                     git(branch: 'INT', url: 'https://github.com/gvsubbareddy/dotnet2.git', changelog: true)
-                else {
+                } else {
                     echo 'checkout the code from master'
                     git(branch: 'master', url: 'https://github.com/gvsubbareddy/dotnet2.git', changelog: true)
                 }
