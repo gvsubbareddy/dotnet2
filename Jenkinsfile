@@ -6,7 +6,7 @@ pipeline {
   stages {
     stage('build') {
       steps {
-        echo "...Building. Build number: ${BUILD_NUMBER}"
+        echo "...Building. Workspace:  ${WORKSPACE}, Build number: ${BUILD_NUMBER}"
         sh 'scl enable rh-dotnet21 bash'
         sh 'cd $WORKSPACE'
         sh '/opt/rh/rh-dotnet21/root/usr/bin/dotnet build'
@@ -33,15 +33,20 @@ pipeline {
             echo "TARGET_ENVIRONMENT: ${params.TARGET_ENVIRONMENT}"
             if("${params.TARGET_ENVIRONMENT}" == "INT") {
                 echo 'Deploying to INT'
-                sh 'az webapp deployment source config-zip -g myresourcegroup  -n subbuwebapp1  --src evodashboard-${BUILD_NUMBER}.zip'
+                /*sh 'az webapp deployment source config-zip -g myresourcegroup  -n subbuwebapp1  --src evodashboard-${BUILD_NUMBER}.zip'*/
+                withCredentials([azureServicePrincipal('principal-credentials-id')]) {
+                    sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
+                    sh 'az account set -s $AZURE_SUBSCRIPTION_ID'
+                    sh 'az resource list'
+                }
             } else {
                 if("${params.TARGET_ENVIRONMENT}" == "mkt") {
                     echo 'Deploying to INT'
-                    sh 'az webapp deployment source config-zip -g myresourcegroup  -n subbuwebapp1  --src evodashboard-${BUILD_NUMBER}.zip'
+                    /*sh 'az webapp deployment source config-zip -g myresourcegroup  -n subbuwebapp1  --src evodashboard-${BUILD_NUMBER}.zip'*/
                 } else {
                     if("${params.TARGET_ENVIRONMENT}" == "pv") {
                         echo 'Deploying to INT'
-                        sh 'az webapp deployment source config-zip -g myresourcegroup  -n subbuwebapp1  --src evodashboard-${BUILD_NUMBER}.zip'
+                        /*sh 'az webapp deployment source config-zip -g myresourcegroup  -n subbuwebapp1  --src evodashboard-${BUILD_NUMBER}.zip'*/
                     } else {
                         error 'deployment to ${params.TARGET_ENVIRONMENT} is not supported'
                     }
