@@ -10,10 +10,10 @@ pipeline {
                  echo "TARGET_ENVIRONMENT: ${params.TARGET_ENVIRONMENT}"
                     if("${params.TARGET_ENVIRONMENT}" == "INT") {
                         echo 'checkout the code from the develop'
-                        git(branch: 'INT', url: 'https://github.com/gvsubbareddy/dotnet2.git', changelog: true)
+                        git(branch: 'INT', credentialsId: 'GitHubCredentials', url: 'https://github.com/gvsubbareddy/dotnet2.git', changelog: true)
                     } else {
                         echo 'checkout the code from master'
-                        git(branch: 'master', url: 'https://github.com/gvsubbareddy/dotnet2.git', changelog: true)
+                        git(branch: 'master', credentialsId: 'GitHubCredentials', url: 'https://github.com/gvsubbareddy/dotnet2.git', changelog: true)
                     }
             }
         }
@@ -54,7 +54,12 @@ pipeline {
                                     subscriptionIdVariable: 'ac3b84b7-8679-4040-8278-6adf62cdff7b',
                                     clientIdVariable: '2fad08bc-0d77-4d67-80b5-c6d37fc5c528',
                                     clientSecretVariable: '/DrXJtyn/aZcq+0DO3nBwoHFoUqoAsrg1UIGFIIVe8o=',
-                                    tenantIdVariable: '47dbbae6-b4da-4a0b-9fb0-72fa25ad79dc')]) {run the command: az account show */ 
+                                    tenantIdVariable: '47dbbae6-b4da-4a0b-9fb0-72fa25ad79dc')]) {run the command: az account show
+                withCredentials([azureServicePrincipal(credentialsId: 'MyAzureServicePrincipal',
+                                    subscriptionIdVariable: 'SUBSCRIPTIONIDVARIABLE',
+                                    clientIdVariable: 'CLIENTIDVARIABLE',
+                                    clientSecretVariable: 'CLIENTSECRETVARIABLE',
+                                    tenantIdVariable: 'TENANTIDVARIABLE')]) { */
                 withCredentials([azureServicePrincipal(credentialsId: 'MyAzureServicePrincipal',
                                     subscriptionIdVariable: 'SUBSCRIPTIONIDVARIABLE',
                                     clientIdVariable: 'CLIENTIDVARIABLE',
