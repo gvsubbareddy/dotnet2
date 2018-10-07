@@ -4,17 +4,20 @@ pipeline {
     choice choices: ['INT', 'mkt','PV'], description: 'Deploy to Environment', name: 'TARGET_ENVIRONMENT'
     }
   stages {
-  stage('checkout') {
-      steps {
-        script {
-             echo "TARGET_ENVIRONMENT: ${params.TARGET_ENVIRONMENT}"
-                if("${params.TARGET_ENVIRONMENT}" == "INT") {
-                    echo 'checkout the code from the develop'
-                    git(branch: 'INT', url: 'https://github.com/gvsubbareddy/dotnet2.git', changelog: true)
-                } else {
-                    echo 'checkout the code from master'
-                    git(branch: 'master', url: 'https://github.com/gvsubbareddy/dotnet2.git', changelog: true)
-                }
+    stage('checkout') {
+        steps {
+            script {
+                 echo "TARGET_ENVIRONMENT: ${params.TARGET_ENVIRONMENT}"
+                    if("${params.TARGET_ENVIRONMENT}" == "INT") {
+                        echo 'checkout the code from the develop'
+                        git(branch: 'INT', url: 'https://github.com/gvsubbareddy/dotnet2.git', changelog: true)
+                    } else {
+                        echo 'checkout the code from master'
+                        git(branch: 'master', url: 'https://github.com/gvsubbareddy/dotnet2.git', changelog: true)
+                    }
+            }
+        }
+    }
             
     stage('build') {
       steps {
