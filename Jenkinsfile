@@ -35,11 +35,11 @@ pipeline {
                 echo 'Deploying to INT'
                 /*sh 'az webapp deployment source config-zip -g myresourcegroup  -n subbuwebapp1  --src evodashboard-${BUILD_NUMBER}.zip'*/
                 /*withCredentials([azureServicePrincipal('principal-credentials-id')]) {*/
-                withCredentials([azureServicePrincipal(credentialsId: 'credentials_id',
+                withCredentials([azureServicePrincipal(credentialsId: 'serviceprincipal',
                                     subscriptionIdVariable: 'ac3b84b7-8679-4040-8278-6adf62cdff7b',
-                                    clientIdVariable: 'CLIENT_ID',
-                                    clientSecretVariable: 'CLIENT_SECRET',
-                                    tenantIdVariable: 'TENANT_ID')]) {
+                                    clientIdVariable: 'fe811805-a94e-4e64-978b-9af057fa424a',
+                                    clientSecretVariable: '52frEg7CMpE6W6S3b1ru2v6LMSRyMg9EV9LHCCVY/Ik=',
+                                    tenantIdVariable: '10d623c6-ac45-445e-9727-abf1c6c09a2e')]) {
                     sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
                     sh 'az account set -s $AZURE_SUBSCRIPTION_ID'
                     sh 'az resource list'
