@@ -9,8 +9,8 @@ pipeline {
             script {
                 echo "TARGET_ENVIRONMENT: ${params.TARGET_ENVIRONMENT}"
                 // send build started notifications
-                /*slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})", channel: "#builds", baseUrl: "https://dreambig-always.slack.com/services/hooks/jenkins-ci/", token:"sMUVWYcPnPQHHWk5iZgvIK2a") */
-                 slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})", channel: "#builds", tokenCredentialId:"slack-token")
+                /*slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' Environment: ${params.TARGET_ENVIRONMENT} (${env.BUILD_URL})", channel: "#builds", baseUrl: "https://dreambig-always.slack.com/services/hooks/jenkins-ci/", token:"sMUVWYcPnPQHHWk5iZgvIK2a") */
+                 slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' Environment: ${params.TARGET_ENVIRONMENT} (${env.BUILD_URL})", channel: "#builds", tokenCredentialId:"slack-token")
                 if("${params.TARGET_ENVIRONMENT}" == "INT") {
                     echo 'checkout the code from the develop'
                     git(branch: 'INT', credentialsId: 'GitHubCredentials', url: 'https://github.com/gvsubbareddy/dotnet2.git', changelog: true)
@@ -90,9 +90,24 @@ pipeline {
       steps {
         script {
             echo 'check if the webapp is up'
-            def response = httpRequest 'https://google.com'
+            def response 
+            if("INT".equalsIgnoreCase("${params.TARGET_ENVIRONMENT}")) {
+                response = httpRequest 'https://google.com'
+            } else if("mkt".equalsIgnoreCase("${params.TARGET_ENVIRONMENT}")) {
+                response = httpRequest 'https://google.com'
+            } else if("pv".equalsIgnoreCase("${params.TARGET_ENVIRONMENT}")) {
+                response = httpRequest 'https://google.com'
+            } else {
+                echo 'Environment: ${params.TARGET_ENVIRONMENT} is not supported'
+            }
             println("Status: "+response.status)
             println("Content: "+response.content)
+            if(response.status == "200") {
+                echo 'website is up and running'
+            } else {
+                echo 'website is not accessible'
+                error 'website is not accessible'
+            }
         }
       }
     }
@@ -100,10 +115,10 @@ pipeline {
   }
   post {
     success {
-        slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})", channel: "#builds", tokenCredentialId:"slack-token")
+        slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' Environment: ${params.TARGET_ENVIRONMENT} (${env.BUILD_URL})", channel: "#builds", tokenCredentialId:"slack-token")
     }
     failure {
-        slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})", channel: "#builds", tokenCredentialId:"slack-token")
+        slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' Environment: ${params.TARGET_ENVIRONMENT} (${env.BUILD_URL})", channel: "#builds", tokenCredentialId:"slack-token")
     }
   }
 }
