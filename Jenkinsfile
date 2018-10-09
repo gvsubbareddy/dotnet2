@@ -85,10 +85,12 @@ pipeline {
     }
     stage('HealthCheck') {
       steps {
-        echo 'check if the webapp is up'
-        def response = httpRequest 'https://google.com'
-        println("Status: "+response.status)
-        println("Content: "+response.content)
+        script {
+            echo 'check if the webapp is up'
+            def response = httpRequest 'https://google.com'
+            println("Status: "+response.status)
+            println("Content: "+response.content)
+        }
       }
     }
     stage('notify') {
