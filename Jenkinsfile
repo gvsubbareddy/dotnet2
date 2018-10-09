@@ -7,14 +7,17 @@ pipeline {
     stage('checkout') {
         steps {
             script {
-                 echo "TARGET_ENVIRONMENT: ${params.TARGET_ENVIRONMENT}"
-                    if("${params.TARGET_ENVIRONMENT}" == "INT") {
-                        echo 'checkout the code from the develop'
-                        git(branch: 'INT', credentialsId: 'GitHubCredentials', url: 'https://github.com/gvsubbareddy/dotnet2.git', changelog: true)
-                    } else {
-                        echo 'checkout the code from master'
-                        git(branch: 'master', credentialsId: 'GitHubCredentials', url: 'https://github.com/gvsubbareddy/dotnet2.git', changelog: true)
-                    }
+                echo "TARGET_ENVIRONMENT: ${params.TARGET_ENVIRONMENT}"
+                // send build started notifications
+                /*slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})", channel: "#builds", baseUrl: "https://dreambig-always.slack.com/services/hooks/jenkins-ci/", token:"sMUVWYcPnPQHHWk5iZgvIK2a") */
+                 slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})", channel: "#builds", tokenCredentialId:"slack-token")
+                if("${params.TARGET_ENVIRONMENT}" == "INT") {
+                    echo 'checkout the code from the develop'
+                    git(branch: 'INT', credentialsId: 'GitHubCredentials', url: 'https://github.com/gvsubbareddy/dotnet2.git', changelog: true)
+                } else {
+                    echo 'checkout the code from master'
+                    git(branch: 'master', credentialsId: 'GitHubCredentials', url: 'https://github.com/gvsubbareddy/dotnet2.git', changelog: true)
+                }
             }
         }
     }
@@ -93,10 +96,13 @@ pipeline {
         }
       }
     }
-    stage('notify') {
-      steps {
-        echo 'completed'
-      }
+     post {
+        success {
+            slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})", channel: "#builds", tokenCredentialId:"slack-token")
+        }
+        failure {
+            slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})", channel: "#builds", tokenCredentialId:"slack-token")
+        }
     }
   }
 }
