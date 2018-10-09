@@ -27,7 +27,7 @@ pipeline {
         sh '/opt/rh/rh-dotnet21/root/usr/bin/dotnet build'
         sh '/opt/rh/rh-dotnet21/root/usr/bin/dotnet publish'
         sh 'cd $WORKSPACE/bin/Debug/netcoreapp2.1/publish'
-        sh 'cp /var/lib/jenkins/workspace/appsettings.json $WORKSPACE/bin/Debug/netcoreapp2.1/publish'
+        sh 'cp -f /var/lib/jenkins/workspace/appsettings.json $WORKSPACE/bin/Debug/netcoreapp2.1/publish'
         sh 'zip -r evodashboard-${BUILD_NUMBER}.zip $WORKSPACE/bin/Debug/netcoreapp2.1/publish/'
         echo "done zip"
       }
@@ -82,6 +82,14 @@ pipeline {
             }
                 
         }
+    }
+    stage('HealthCheck') {
+      steps {
+        echo 'check if the webapp is up'
+        def response = httpRequest 'https://google.com'
+        println("Status: "+response.status)
+        println("Content: "+response.content)
+      }
     }
     stage('notify') {
       steps {
