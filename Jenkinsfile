@@ -102,7 +102,7 @@ pipeline {
             }
             println("Status: "+response.status)
             println("Content: "+response.content)
-            if(response.status == "200") {
+            if("200".equalsIgnoreCase(response.status)) {
                 echo 'website is up and running'
             } else {
                 echo 'website is not accessible'
