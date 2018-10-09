@@ -63,7 +63,7 @@ pipeline {
                         sh 'echo subscriptionIdVariable=$SUBSCRIPTIONIDVARIABLE clientIdVariable=$CLIENTIDVARIABLE clientSecretVariable=$CLIENTSECRETVARIABLE tenantIdVariable=$TENANTIDVARIABLE'
                         sh 'az webapp stop -g myresourcegroup  -n subbuwebapp1'
                         sh 'az webapp deployment source config-zip -g myresourcegroup  -n subbuwebapp1  --src evodashboard-${BUILD_NUMBER}.zip'
-                        sh 'az webapp start source config-zip -g myresourcegroup  -n subbuwebapp1'
+                        sh 'az webapp start -g myresourcegroup  -n subbuwebapp1'
                         /*sh 'az login --service-principal -u $CLIENTIDVARIABLE -p $CLIENTSECRETVARIABLE -t $TENANTIDVARIABLE'
                         sh 'az account set -s $SUBSCRIPTIONIDVARIABLE'
                         sh 'az resource list'*/
